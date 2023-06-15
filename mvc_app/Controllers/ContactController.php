@@ -20,8 +20,6 @@ class ContactController extends Controller {
         }
 
         $errorMessages = [];
-        $contact = new Contact();
-        $inquiries = $contact->showInquiry();
 
         // バリデーション
         if(empty($_POST['name'])){
@@ -52,6 +50,8 @@ class ContactController extends Controller {
 
 
         if(!empty($errorMessages)){
+            $contact = new Contact();
+            $inquiries = $contact->showInquiry();
             // バリデーション失敗
             $this->view('contact/index', ['post' => $_POST, 'errorMessages' => $errorMessages, 'inquiries' => $inquiries]);
         }else{
@@ -166,6 +166,7 @@ class ContactController extends Controller {
     }
 
     public function delete() {
+
         // ダイレクトアクセスした場合
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: /');
@@ -173,10 +174,12 @@ class ContactController extends Controller {
         }
         // URLから該当のIDを取得
         $id = $_POST['id'];
-        $contact = new Contact();
+        $contact = new Contact;
         $result = $contact->deleteContact($id);
 
         if($result === true){
+            $contact = new Contact();
+            $inquiries = $contact->showInquiry();
             $this->view('contact/index', ['inquiries' => $inquiries]);
         } else {
             header('Location: /contact/index');
