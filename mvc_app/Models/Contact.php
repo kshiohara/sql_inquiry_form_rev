@@ -81,7 +81,7 @@ class Contact extends Db
 
     /**
      * お問合せ内容の情報を更新する
-     * @param string $id ID
+     * @param int $id ID
      * @param string $name 氏名
      * @param string $kana フリガナ
      * @param string $tel 電話番号
@@ -131,7 +131,7 @@ class Contact extends Db
             $stmt->execute();
             // トランザクションを完了することでデータの書き込みを確定させる
             $this->dbh->commit();
-            return;
+            return true;
         } catch (PDOException $e) {
             // 不具合があった場合トランザクションをロールバックして変更をなかったコトにする。
             $this->dbh->rollBack();
